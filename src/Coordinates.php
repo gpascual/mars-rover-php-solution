@@ -2,7 +2,6 @@
 
 namespace GPascual\MarsRover;
 
-
 class Coordinates
 {
     private int $x;

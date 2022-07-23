@@ -2,6 +2,8 @@
 
 namespace GPascual\MarsRover;
 
+use GPascual\MarsRover\Commands\Command;
+
 class MarsRover
 {
     private Coordinates $position;
@@ -18,6 +20,11 @@ class MarsRover
         return $this->position;
     }
 
+    public function setPosition(Coordinates $position): void
+    {
+        $this->position = $position;
+    }
+
     public function orientation(): CardinalPoint
     {
         return $this->orientation;
@@ -26,36 +33,25 @@ class MarsRover
     public function commands(array $commands)
     {
         foreach ($commands as $command) {
+            if ($command instanceof Command) {
+                $command->execute();
+                continue;
+            }
+
             switch ($command) {
-                case 'f':
-                    switch ($this->orientation()) {
-                        case CardinalPoint::north():
-                            $this->position = $this->position->add(new Coordinates(0, 1));
-                            break;
-                        case CardinalPoint::east():
-                            $this->position = $this->position->add(new Coordinates(1, 0));
-                            break;
-                        case CardinalPoint::south():
-                            $this->position = $this->position->add(new Coordinates(0, -1));
-                            break;
-                        case CardinalPoint::west():
-                            $this->position = $this->position->add(new Coordinates(-1, 0));
-                            break;
-                    }
-                    break;
                 case 'b':
                     switch ($this->orientation()) {
                         case CardinalPoint::north():
-                            $this->position = $this->position->add(new Coordinates(0, -1));
+                            $this->setPosition($this->position->add(new Coordinates(0, -1)));
                             break;
                         case CardinalPoint::east():
-                            $this->position = $this->position->add(new Coordinates(-1, 0));
+                            $this->setPosition($this->position->add(new Coordinates(-1, 0)));
                             break;
                         case CardinalPoint::south():
-                            $this->position = $this->position->add(new Coordinates(0, 1));
+                            $this->setPosition($this->position->add(new Coordinates(0, 1)));
                             break;
                         case CardinalPoint::west():
-                            $this->position = $this->position->add(new Coordinates(1, 0));
+                            $this->setPosition($this->position->add(new Coordinates(1, 0)));
                             break;
                     }
                     break;
