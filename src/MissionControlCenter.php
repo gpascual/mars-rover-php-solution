@@ -10,9 +10,9 @@ use function Lambdish\Phunctional\partial;
 
 class MissionControlCenter
 {
-    public function commands(MarsRover $rover, array $commands): void
+    public function commands(MarsRover $rover, Planet $planet, array $commands): void
     {
-        $commandCreator = partial([Command::class, 'createFromName'], $rover);
+        $commandCreator = partial([Command::class, 'createFromName'], $rover, $planet);
         walk(
             function (Command $command) {
                 $command();

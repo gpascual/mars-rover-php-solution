@@ -52,4 +52,11 @@ class Coordinates
     {
         return self::create($this->x + $increment->x, $this->y + $increment->y);
     }
+
+    public function wrap(int $maxX, int $maxY): self
+    {
+        $modX = $maxX + 1;
+        $modY = $maxY + 1;
+        return self::create(($this->x + $modX) % $modX, ($this->y + $modY) % $modY);
+    }
 }

@@ -3,6 +3,7 @@
 namespace GPascual\MarsRover\Commands;
 
 use GPascual\MarsRover\MarsRover;
+use GPascual\MarsRover\Planet;
 
 abstract class Command
 {
@@ -13,10 +14,10 @@ abstract class Command
         $this->rover = $rover;
     }
 
-    public static function createFromName(MarsRover $rover, string $commandName): Command
+    public static function createFromName(MarsRover $rover, Planet $planet, string $commandName): Command
     {
         return match ($commandName) {
-            'f' => new MoveForward($rover),
+            'f' => new MoveForward($rover, $planet),
             'b' => new MoveBackward($rover),
             'l' => new TurnLeft($rover),
             'r' => new TurnRight($rover),
