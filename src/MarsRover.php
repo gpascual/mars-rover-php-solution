@@ -35,30 +35,14 @@ class MarsRover
         $this->orientation = $orientation;
     }
 
-    public function commands(array $commands)
+    /**
+     * @param Command[] $commands
+     * @return void
+     */
+    public function commands(array $commands): void
     {
         foreach ($commands as $command) {
-            if ($command instanceof Command) {
-                $command->execute();
-                continue;
-            }
-
-            if ($command == 'r') {
-                switch ($this->orientation()) {
-                    case CardinalPoint::north():
-                        $this->orientation = CardinalPoint::east();
-                        break;
-                    case CardinalPoint::east():
-                        $this->orientation = CardinalPoint::south();
-                        break;
-                    case CardinalPoint::south():
-                        $this->orientation = CardinalPoint::west();
-                        break;
-                    case CardinalPoint::west():
-                        $this->orientation = CardinalPoint::north();
-                        break;
-                }
-            }
+            $command->execute();
         }
     }
 }
