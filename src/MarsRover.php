@@ -2,7 +2,6 @@
 
 namespace GPascual\MarsRover;
 
-
 class MarsRover
 {
     private array $position;
@@ -22,5 +21,9 @@ class MarsRover
     public function orientation(): string
     {
         return $this->orientation;
+    }
+
+    public function commands(array $commands)
+    {
     }
 }
