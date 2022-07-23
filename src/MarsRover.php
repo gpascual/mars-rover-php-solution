@@ -25,5 +25,23 @@ class MarsRover
 
     public function commands(array $commands)
     {
+        if (empty($commands)) {
+            return;
+        }
+
+        switch ($this->orientation()) {
+            case 'N':
+                $this->position[0] = 1;
+                break;
+            case 'E':
+                $this->position[1] = 1;
+                break;
+            case 'S':
+                $this->position[0] = -1;
+                break;
+            case 'W':
+                $this->position[1] = -1;
+                break;
+        }
     }
 }
