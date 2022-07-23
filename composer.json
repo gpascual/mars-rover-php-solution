@@ -1,0 +1,24 @@
+{
+  "name": "gpascual/mars-rover",
+  "autoload": {
+    "psr-4": {
+      "GPascual\\MarsRover\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "GPascual\\MarsRover\\Spec\\": "spec/"
+    }
+  },
+  "config": {
+    "bin-dir": "bin"
+  },
+  "require": {
+    "php": "^8.1",
+    "lambdish/phunctional": "^2.0"
+  },
+  "require-dev": {
+    "kahlan/kahlan": "^5.0",
+    "roave/security-advisories": "dev-latest"
+  }
+}
