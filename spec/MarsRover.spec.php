@@ -87,4 +87,21 @@ describe('A Mars Rover', function () {
             }
         );
     });
+
+    describe('given a left command', function () {
+        each([
+            'when facing north' => [[0, 0], 'W', new MarsRover([0, 0], 'N')],
+            'when facing east' => [[0, 0], 'N', new MarsRover([0, 0], 'E')],
+            'when facing south' => [[0, 0], 'E', new MarsRover([0, 0], 'S')],
+            'when facing west' => [[0, 0], 'S', new MarsRover([0, 0], 'W')],
+        ])->it(
+            'should turn counter-clockwise',
+            function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
+                $rover->commands(['l']);
+
+                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->orientation())->toBe($expectedOrientation);
+            }
+        );
+    });
 });
