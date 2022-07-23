@@ -2,13 +2,12 @@
 
 namespace GPascual\MarsRover\Commands;
 
-
 use GPascual\MarsRover\CardinalPoint;
 use GPascual\MarsRover\Coordinates;
 
 class MoveBackward extends Command
 {
-    public function execute()
+    public function execute(): void
     {
         switch ($this->rover->orientation()) {
             case CardinalPoint::north():

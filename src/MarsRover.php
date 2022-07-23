@@ -30,6 +30,11 @@ class MarsRover
         return $this->orientation;
     }
 
+    public function setOrientation(CardinalPoint $orientation): void
+    {
+        $this->orientation = $orientation;
+    }
+
     public function commands(array $commands)
     {
         foreach ($commands as $command) {
@@ -38,39 +43,21 @@ class MarsRover
                 continue;
             }
 
-            switch ($command) {
-                case 'l':
-                    switch ($this->orientation()) {
-                        case CardinalPoint::north():
-                            $this->orientation = CardinalPoint::west();
-                            break;
-                        case CardinalPoint::east():
-                            $this->orientation = CardinalPoint::north();
-                            break;
-                        case CardinalPoint::south():
-                            $this->orientation = CardinalPoint::east();
-                            break;
-                        case CardinalPoint::west():
-                            $this->orientation = CardinalPoint::south();
-                            break;
-                    }
-                    break;
-                case 'r':
-                    switch ($this->orientation()) {
-                        case CardinalPoint::north():
-                            $this->orientation = CardinalPoint::east();
-                            break;
-                        case CardinalPoint::east():
-                            $this->orientation = CardinalPoint::south();
-                            break;
-                        case CardinalPoint::south():
-                            $this->orientation = CardinalPoint::west();
-                            break;
-                        case CardinalPoint::west():
-                            $this->orientation = CardinalPoint::north();
-                            break;
-                    }
-                    break;
+            if ($command == 'r') {
+                switch ($this->orientation()) {
+                    case CardinalPoint::north():
+                        $this->orientation = CardinalPoint::east();
+                        break;
+                    case CardinalPoint::east():
+                        $this->orientation = CardinalPoint::south();
+                        break;
+                    case CardinalPoint::south():
+                        $this->orientation = CardinalPoint::west();
+                        break;
+                    case CardinalPoint::west():
+                        $this->orientation = CardinalPoint::north();
+                        break;
+                }
             }
         }
     }

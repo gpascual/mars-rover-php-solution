@@ -18,9 +18,10 @@ abstract class Command
         return match ($commandName) {
             'f' => new MoveForward($rover),
             'b' => new MoveBackward($rover),
+            'l' => new TurnLeft($rover),
             default => $commandName,
         };
     }
 
-    abstract public function execute();
+    abstract public function execute(): void;
 }
