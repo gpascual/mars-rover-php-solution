@@ -151,6 +151,24 @@ describe('A Mars Rover', function () {
                 expect($rover->orientation())->toBe($expectedOrientation);
             }
         );
+
+        each([
+            'when facing north at the lowest latitude'
+            => [Coordinates::create(4, 5), new MarsRover(Coordinates::create(4, 0), CardinalPoint::north())],
+            'when facing east at the lowest longitude'
+            => [Coordinates::create(5, 0), new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())],
+            'when facing south at the highest latitude'
+            => [Coordinates::create(2, 0), new MarsRover(Coordinates::create(2, 5), CardinalPoint::south())],
+            'when facing west at the highest longitude'
+            => [Coordinates::create(0, 1), new MarsRover(Coordinates::create(5, 1), CardinalPoint::west())],
+        ])->it(
+            'should wrap the edge',
+            function (Coordinates $expectedPosition, MarsRover $rover) {
+                $this->controlCenter->commands($rover, new Planet(5, 5), ['b']);
+
+                expect($rover->position())->toBe($expectedPosition);
+            }
+        );
     });
 
     describe('given a left command', function () {

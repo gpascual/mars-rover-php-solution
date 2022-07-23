@@ -18,7 +18,7 @@ abstract class Command
     {
         return match ($commandName) {
             'f' => new MoveForward($rover, $planet),
-            'b' => new MoveBackward($rover),
+            'b' => new MoveBackward($rover, $planet),
             'l' => new TurnLeft($rover),
             'r' => new TurnRight($rover),
             default => $commandName,
