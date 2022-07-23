@@ -5,9 +5,9 @@ namespace GPascual\MarsRover;
 class MarsRover
 {
     private Coordinates $position;
-    private string $orientation;
+    private CardinalPoint $orientation;
 
-    public function __construct(Coordinates $initialPosition, string $initialOrientation)
+    public function __construct(Coordinates $initialPosition, CardinalPoint $initialOrientation)
     {
         $this->position = $initialPosition;
         $this->orientation = $initialOrientation;
@@ -18,7 +18,7 @@ class MarsRover
         return $this->position;
     }
 
-    public function orientation(): string
+    public function orientation(): CardinalPoint
     {
         return $this->orientation;
     }
@@ -29,65 +29,65 @@ class MarsRover
             switch ($command) {
                 case 'f':
                     switch ($this->orientation()) {
-                        case 'N':
+                        case CardinalPoint::north():
                             $this->position = $this->position->add(new Coordinates(0, 1));
                             break;
-                        case 'E':
+                        case CardinalPoint::east():
                             $this->position = $this->position->add(new Coordinates(1, 0));
                             break;
-                        case 'S':
+                        case CardinalPoint::south():
                             $this->position = $this->position->add(new Coordinates(0, -1));
                             break;
-                        case 'W':
+                        case CardinalPoint::west():
                             $this->position = $this->position->add(new Coordinates(-1, 0));
                             break;
                     }
                     break;
                 case 'b':
                     switch ($this->orientation()) {
-                        case 'N':
+                        case CardinalPoint::north():
                             $this->position = $this->position->add(new Coordinates(0, -1));
                             break;
-                        case 'E':
+                        case CardinalPoint::east():
                             $this->position = $this->position->add(new Coordinates(-1, 0));
                             break;
-                        case 'S':
+                        case CardinalPoint::south():
                             $this->position = $this->position->add(new Coordinates(0, 1));
                             break;
-                        case 'W':
+                        case CardinalPoint::west():
                             $this->position = $this->position->add(new Coordinates(1, 0));
                             break;
                     }
                     break;
                 case 'l':
                     switch ($this->orientation()) {
-                        case 'N':
-                            $this->orientation = 'W';
+                        case CardinalPoint::north():
+                            $this->orientation = CardinalPoint::west();
                             break;
-                        case 'E':
-                            $this->orientation = 'N';
+                        case CardinalPoint::east():
+                            $this->orientation = CardinalPoint::north();
                             break;
-                        case 'S':
-                            $this->orientation = 'E';
+                        case CardinalPoint::south():
+                            $this->orientation = CardinalPoint::east();
                             break;
-                        case 'W':
-                            $this->orientation = 'S';
+                        case CardinalPoint::west():
+                            $this->orientation = CardinalPoint::south();
                             break;
                     }
                     break;
                 case 'r':
                     switch ($this->orientation()) {
-                        case 'N':
-                            $this->orientation = 'E';
+                        case CardinalPoint::north():
+                            $this->orientation = CardinalPoint::east();
                             break;
-                        case 'E':
-                            $this->orientation = 'S';
+                        case CardinalPoint::east():
+                            $this->orientation = CardinalPoint::south();
                             break;
-                        case 'S':
-                            $this->orientation = 'W';
+                        case CardinalPoint::south():
+                            $this->orientation = CardinalPoint::west();
                             break;
-                        case 'W':
-                            $this->orientation = 'N';
+                        case CardinalPoint::west():
+                            $this->orientation = CardinalPoint::north();
                             break;
                     }
                     break;
