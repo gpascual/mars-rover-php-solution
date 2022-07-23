@@ -39,22 +39,6 @@ class MarsRover
             }
 
             switch ($command) {
-                case 'b':
-                    switch ($this->orientation()) {
-                        case CardinalPoint::north():
-                            $this->setPosition($this->position->add(new Coordinates(0, -1)));
-                            break;
-                        case CardinalPoint::east():
-                            $this->setPosition($this->position->add(new Coordinates(-1, 0)));
-                            break;
-                        case CardinalPoint::south():
-                            $this->setPosition($this->position->add(new Coordinates(0, 1)));
-                            break;
-                        case CardinalPoint::west():
-                            $this->setPosition($this->position->add(new Coordinates(1, 0)));
-                            break;
-                    }
-                    break;
                 case 'l':
                     switch ($this->orientation()) {
                         case CardinalPoint::north():

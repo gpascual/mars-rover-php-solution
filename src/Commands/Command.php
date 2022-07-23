@@ -15,11 +15,11 @@ abstract class Command
 
     public static function createFromName(MarsRover $rover, string $commandName)
     {
-        switch ($commandName) {
-            case 'f':
-                return new MoveForward($rover);
-        }
-        return $commandName;
+        return match ($commandName) {
+            'f' => new MoveForward($rover),
+            'b' => new MoveBackward($rover),
+            default => $commandName,
+        };
     }
 
     abstract public function execute();
