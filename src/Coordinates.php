@@ -17,4 +17,9 @@ class Coordinates
     {
         return new self($this->x + $increment->x, $this->y + $increment->y);
     }
+
+    public function scalarMultiply(int $factor): self
+    {
+        return new self($this->x * $factor, $this->y * $factor);
+    }
 }
