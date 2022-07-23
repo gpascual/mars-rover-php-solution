@@ -7,6 +7,9 @@ use GPascual\MarsRover\Coordinates;
 use GPascual\MarsRover\MarsRover;
 use GPascual\MarsRover\MissionControlCenter;
 
+use function Lambdish\Phunctional\each as walk;
+use function Lambdish\Phunctional\partial;
+
 function each($data): object
 {
     return new class ($data) {
@@ -17,22 +20,27 @@ function each($data): object
             $this->data = $data;
         }
 
-        public function it($message, callable $closure)
+        public function it($message, callable $closure): void
         {
-            foreach ($this->data as $contextMessage => $datum) {
-                $itClosure = function () use ($closure, $datum) {
-                    $closure(...$datum);
-                };
-                $contextClosure = function () use ($message, $itClosure) {
-                    it($message, $itClosure);
-                };
+            $closureExecutor = partial(
+                function ($message, $closure, $datum, $contextMessage) {
+                    $itClosure = function () use ($closure, $datum) {
+                        $closure(...$datum);
+                    };
+                    $contextClosure = function () use ($message, $itClosure) {
+                        it($message, $itClosure);
+                    };
 
-                if ($contextMessage) {
-                    context($contextMessage, $contextClosure);
-                } else {
-                    $contextClosure();
-                }
-            }
+                    if ($contextMessage) {
+                        context($contextMessage, $contextClosure);
+                    } else {
+                        $contextClosure();
+                    }
+                },
+                $message,
+                $closure
+            );
+            walk($closureExecutor, $this->data);
         }
     };
 }
@@ -56,7 +64,7 @@ describe('A Mars Rover', function () {
         $this->controlCenter->commands($rover, ['l','f', 'l', 'f', 'r', 'b']);
 
         expect($rover->position())->toEqual(new Coordinates(0, 1));
-        expect($rover->orientation())->toEqual('E');
+        expect($rover->orientation())->toBe(CardinalPoint::east());
     });
 
     describe('given a forward command', function () {
