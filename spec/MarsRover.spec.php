@@ -48,10 +48,10 @@ describe('A Mars Rover', function () {
     it('may receive a list of commands', function () {
         $rover = new MarsRover([0, 0], 'S');
 
-        $rover->commands(['f', 'f', 'b', 'f']);
+        $rover->commands(['l','f', 'l', 'f', 'r', 'b']);
 
-        expect($rover->position())->toBe([-2, 0]);
-        expect($rover->orientation())->toBe('S');
+        expect($rover->position())->toBe([1, 0]);
+        expect($rover->orientation())->toBe('E');
     });
 
     describe('given a forward command', function () {
@@ -95,9 +95,26 @@ describe('A Mars Rover', function () {
             'when facing south' => [[0, 0], 'E', new MarsRover([0, 0], 'S')],
             'when facing west' => [[0, 0], 'S', new MarsRover([0, 0], 'W')],
         ])->it(
-            'should turn counter-clockwise',
+            'should turn counterclockwise',
             function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
                 $rover->commands(['l']);
+
+                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->orientation())->toBe($expectedOrientation);
+            }
+        );
+    });
+
+    describe('given a right command', function () {
+        each([
+            'when facing north' => [[0, 0], 'E', new MarsRover([0, 0], 'N')],
+            'when facing east' => [[0, 0], 'S', new MarsRover([0, 0], 'E')],
+            'when facing south' => [[0, 0], 'W', new MarsRover([0, 0], 'S')],
+            'when facing west' => [[0, 0], 'N', new MarsRover([0, 0], 'W')],
+        ])->it(
+            'should turn clockwise',
+            function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
+                $rover->commands(['r']);
 
                 expect($rover->position())->toBe($expectedPosition);
                 expect($rover->orientation())->toBe($expectedOrientation);
