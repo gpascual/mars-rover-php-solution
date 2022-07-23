@@ -7,7 +7,7 @@ class MoveForward extends Command
     protected function execute(): void
     {
         $this->rover->setPosition(
-            $this->rover->position()->add($this->rover->orientation()->getNormalVector())
+            $this->rover->position()->add($this->rover->orientation())
         );
     }
 }

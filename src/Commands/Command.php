@@ -24,7 +24,7 @@ abstract class Command
         };
     }
 
-    final public function __invoke()
+    final public function __invoke(): void
     {
         $this->execute();
     }

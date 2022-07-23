@@ -49,7 +49,7 @@ describe('A Mars Rover', function () {
     given('controlCenter', fn() => new MissionControlCenter());
 
     it('should be created with initial position and orientation', function () {
-        $initialPosition = new Coordinates(0, 0);
+        $initialPosition = Coordinates::create(0, 0);
         $initialOrientation = CardinalPoint::north();
 
         $rover = new MarsRover($initialPosition, $initialOrientation);
@@ -59,35 +59,35 @@ describe('A Mars Rover', function () {
     });
 
     it('may receive a list of commands', function () {
-        $rover = new MarsRover(new Coordinates(0, 0), CardinalPoint::south());
+        $rover = new MarsRover(Coordinates::create(0, 0), CardinalPoint::south());
 
         $this->controlCenter->commands($rover, ['l','f', 'l', 'f', 'r', 'b']);
 
-        expect($rover->position())->toEqual(new Coordinates(0, 1));
+        expect($rover->position())->toEqual(Coordinates::create(0, 1));
         expect($rover->orientation())->toBe(CardinalPoint::east());
     });
 
     describe('given a forward command', function () {
         each([
             'when facing north' => [
-                new Coordinates(0, 1),
+                Coordinates::create(0, 1),
                 CardinalPoint::north(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::north())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::north())
             ],
             'when facing east' => [
-                new Coordinates(1, 0),
+                Coordinates::create(1, 0),
                 CardinalPoint::east(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::east())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())
             ],
             'when facing south' => [
-                new Coordinates(0, -1),
+                Coordinates::create(0, -1),
                 CardinalPoint::south(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::south())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::south())
             ],
             'when facing west' => [
-                new Coordinates(-1, 0),
+                Coordinates::create(-1, 0),
                 CardinalPoint::west(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::west())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::west())
             ],
         ])->it(
             'should move forward on that direction',
@@ -103,24 +103,24 @@ describe('A Mars Rover', function () {
     describe('given a backward command', function () {
         each([
             'when facing north' => [
-                new Coordinates(0, -1),
+                Coordinates::create(0, -1),
                 CardinalPoint::north(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::north())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::north())
             ],
             'when facing east' => [
-                new Coordinates(-1, 0),
+                Coordinates::create(-1, 0),
                 CardinalPoint::east(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::east())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())
             ],
             'when facing south' => [
-                new Coordinates(0, 1),
+                Coordinates::create(0, 1),
                 CardinalPoint::south(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::south())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::south())
             ],
             'when facing west' => [
-                new Coordinates(1, 0),
+                Coordinates::create(1, 0),
                 CardinalPoint::west(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::west())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::west())
             ],
         ])->it(
             'should move backward on that direction',
@@ -136,24 +136,24 @@ describe('A Mars Rover', function () {
     describe('given a left command', function () {
         each([
             'when facing north' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::west(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::north())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::north())
             ],
             'when facing east' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::north(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::east())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())
             ],
             'when facing south' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::east(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::south())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::south())
             ],
             'when facing west' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::south(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::west())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::west())
             ],
         ])->it(
             'should turn counterclockwise',
@@ -169,24 +169,24 @@ describe('A Mars Rover', function () {
     describe('given a right command', function () {
         each([
             'when facing north' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::east(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::north())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::north())
             ],
             'when facing east' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::south(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::east())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())
             ],
             'when facing south' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::west(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::south())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::south())
             ],
             'when facing west' => [
-                new Coordinates(0, 0),
+                Coordinates::create(0, 0),
                 CardinalPoint::north(),
-                new MarsRover(new Coordinates(0, 0), CardinalPoint::west())
+                new MarsRover(Coordinates::create(0, 0), CardinalPoint::west())
             ],
         ])->it(
             'should turn clockwise',

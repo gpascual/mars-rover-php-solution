@@ -6,6 +6,6 @@ class TurnRight extends Command
 {
     protected function execute(): void
     {
-        $this->rover->setOrientation($this->rover->orientation()->right());
+        $this->rover->setOrientation($this->rover->orientation()->rotate90());
     }
 }
