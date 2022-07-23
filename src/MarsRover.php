@@ -2,8 +2,6 @@
 
 namespace GPascual\MarsRover;
 
-use GPascual\MarsRover\Commands\Command;
-
 class MarsRover
 {
     private Coordinates $position;
@@ -33,16 +31,5 @@ class MarsRover
     public function setOrientation(CardinalPoint $orientation): void
     {
         $this->orientation = $orientation;
-    }
-
-    /**
-     * @param Command[] $commands
-     * @return void
-     */
-    public function commands(array $commands): void
-    {
-        foreach ($commands as $command) {
-            $command->execute();
-        }
     }
 }

@@ -6,7 +6,7 @@ use GPascual\MarsRover\CardinalPoint;
 
 class TurnLeft extends Command
 {
-    public function execute(): void
+    protected function execute(): void
     {
         switch ($this->rover->orientation()) {
             case CardinalPoint::north():

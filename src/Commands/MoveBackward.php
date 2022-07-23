@@ -7,7 +7,7 @@ use GPascual\MarsRover\Coordinates;
 
 class MoveBackward extends Command
 {
-    public function execute(): void
+    protected function execute(): void
     {
         switch ($this->rover->orientation()) {
             case CardinalPoint::north():

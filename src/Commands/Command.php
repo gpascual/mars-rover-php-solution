@@ -24,5 +24,10 @@ abstract class Command
         };
     }
 
-    abstract public function execute(): void;
+    final public function __invoke()
+    {
+        $this->execute();
+    }
+
+    abstract protected function execute(): void;
 }
