@@ -18,8 +18,29 @@ class CardinalPoint
         return $this->name;
     }
 
-    public function getNormalVector(): Coordinates {
+    public function getNormalVector(): Coordinates
+    {
         return $this->normalVector;
+    }
+
+    public function left(): CardinalPoint
+    {
+        return match ($this) {
+            self::north() => self::west(),
+            self::east() => self::north(),
+            self::south() => self::east(),
+            self::west() => self::south()
+        };
+    }
+
+    public function right(): CardinalPoint
+    {
+        return match ($this) {
+            self::north() => self::east(),
+            self::east() => self::south(),
+            self::south() => self::west(),
+            self::west() => self::north()
+        };
     }
 
     public static function north(): CardinalPoint
