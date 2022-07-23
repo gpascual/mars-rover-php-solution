@@ -4,16 +4,16 @@ namespace GPascual\MarsRover;
 
 class MarsRover
 {
-    private array $position;
+    private Coordinates $position;
     private string $orientation;
 
-    public function __construct(array $initialPosition, string $initialOrientation)
+    public function __construct(Coordinates $initialPosition, string $initialOrientation)
     {
         $this->position = $initialPosition;
         $this->orientation = $initialOrientation;
     }
 
-    public function position(): array
+    public function position(): Coordinates
     {
         return $this->position;
     }
@@ -30,32 +30,32 @@ class MarsRover
                 case 'f':
                     switch ($this->orientation()) {
                         case 'N':
-                            ++$this->position[0];
+                            $this->position = $this->position->add(new Coordinates(0, 1));
                             break;
                         case 'E':
-                            ++$this->position[1];
+                            $this->position = $this->position->add(new Coordinates(1, 0));
                             break;
                         case 'S':
-                            --$this->position[0];
+                            $this->position = $this->position->add(new Coordinates(0, -1));
                             break;
                         case 'W':
-                            --$this->position[1];
+                            $this->position = $this->position->add(new Coordinates(-1, 0));
                             break;
                     }
                     break;
                 case 'b':
                     switch ($this->orientation()) {
                         case 'N':
-                            --$this->position[0];
+                            $this->position = $this->position->add(new Coordinates(0, -1));
                             break;
                         case 'E':
-                            --$this->position[1];
+                            $this->position = $this->position->add(new Coordinates(-1, 0));
                             break;
                         case 'S':
-                            ++$this->position[0];
+                            $this->position = $this->position->add(new Coordinates(0, 1));
                             break;
                         case 'W':
-                            ++$this->position[1];
+                            $this->position = $this->position->add(new Coordinates(1, 0));
                             break;
                     }
                     break;

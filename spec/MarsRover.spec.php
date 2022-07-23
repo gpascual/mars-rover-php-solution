@@ -2,6 +2,7 @@
 
 namespace GPascual\MarsRover\Spec;
 
+use GPascual\MarsRover\Coordinates;
 use GPascual\MarsRover\MarsRover;
 
 function each($data): object
@@ -36,36 +37,36 @@ function each($data): object
 
 describe('A Mars Rover', function () {
     it('should be created with initial position and orientation', function () {
-        $initialPosition = [0, 0];
+        $initialPosition = new Coordinates(0, 0);
         $initialOrientation = 'N';
 
         $rover = new MarsRover($initialPosition, $initialOrientation);
 
-        expect($rover->position())->toBe($initialPosition);
+        expect($rover->position())->toEqual($initialPosition);
         expect($rover->orientation())->toBe($initialOrientation);
     });
 
     it('may receive a list of commands', function () {
-        $rover = new MarsRover([0, 0], 'S');
+        $rover = new MarsRover(new Coordinates(0, 0), 'S');
 
         $rover->commands(['l','f', 'l', 'f', 'r', 'b']);
 
-        expect($rover->position())->toBe([1, 0]);
+        expect($rover->position())->toEqual(new Coordinates(0, 1));
         expect($rover->orientation())->toBe('E');
     });
 
     describe('given a forward command', function () {
         each([
-            'when facing north' => [[1, 0], 'N', new MarsRover([0, 0], 'N')],
-            'when facing east' => [[0, 1], 'E', new MarsRover([0, 0], 'E')],
-            'when facing south' => [[-1, 0], 'S', new MarsRover([0, 0], 'S')],
-            'when facing west' => [[0, -1], 'W', new MarsRover([0, 0], 'W')],
+            'when facing north' => [new Coordinates(0, 1), 'N', new MarsRover(new Coordinates(0, 0), 'N')],
+            'when facing east' => [new Coordinates(1, 0), 'E', new MarsRover(new Coordinates(0, 0), 'E')],
+            'when facing south' => [new Coordinates(0, -1), 'S', new MarsRover(new Coordinates(0, 0), 'S')],
+            'when facing west' => [new Coordinates(-1, 0), 'W', new MarsRover(new Coordinates(0, 0), 'W')],
         ])->it(
             'should move forward on that direction',
             function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
                 $rover->commands(['f']);
 
-                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->position())->toEqual($expectedPosition);
                 expect($rover->orientation())->toBe($expectedOrientation);
             }
         );
@@ -73,16 +74,16 @@ describe('A Mars Rover', function () {
 
     describe('given a backward command', function () {
         each([
-            'when facing north' => [[-1, 0], 'N', new MarsRover([0, 0], 'N')],
-            'when facing east' => [[0, -1], 'E', new MarsRover([0, 0], 'E')],
-            'when facing south' => [[1, 0], 'S', new MarsRover([0, 0], 'S')],
-            'when facing west' => [[0, 1], 'W', new MarsRover([0, 0], 'W')],
+            'when facing north' => [new Coordinates(0, -1), 'N', new MarsRover(new Coordinates(0, 0), 'N')],
+            'when facing east' => [new Coordinates(-1, 0), 'E', new MarsRover(new Coordinates(0, 0), 'E')],
+            'when facing south' => [new Coordinates(0, 1), 'S', new MarsRover(new Coordinates(0, 0), 'S')],
+            'when facing west' => [new Coordinates(1, 0), 'W', new MarsRover(new Coordinates(0, 0), 'W')],
         ])->it(
             'should move backward on that direction',
             function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
                 $rover->commands(['b']);
 
-                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->position())->toEqual($expectedPosition);
                 expect($rover->orientation())->toBe($expectedOrientation);
             }
         );
@@ -90,16 +91,16 @@ describe('A Mars Rover', function () {
 
     describe('given a left command', function () {
         each([
-            'when facing north' => [[0, 0], 'W', new MarsRover([0, 0], 'N')],
-            'when facing east' => [[0, 0], 'N', new MarsRover([0, 0], 'E')],
-            'when facing south' => [[0, 0], 'E', new MarsRover([0, 0], 'S')],
-            'when facing west' => [[0, 0], 'S', new MarsRover([0, 0], 'W')],
+            'when facing north' => [new Coordinates(0, 0), 'W', new MarsRover(new Coordinates(0, 0), 'N')],
+            'when facing east' => [new Coordinates(0, 0), 'N', new MarsRover(new Coordinates(0, 0), 'E')],
+            'when facing south' => [new Coordinates(0, 0), 'E', new MarsRover(new Coordinates(0, 0), 'S')],
+            'when facing west' => [new Coordinates(0, 0), 'S', new MarsRover(new Coordinates(0, 0), 'W')],
         ])->it(
             'should turn counterclockwise',
             function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
                 $rover->commands(['l']);
 
-                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->position())->toEqual($expectedPosition);
                 expect($rover->orientation())->toBe($expectedOrientation);
             }
         );
@@ -107,16 +108,16 @@ describe('A Mars Rover', function () {
 
     describe('given a right command', function () {
         each([
-            'when facing north' => [[0, 0], 'E', new MarsRover([0, 0], 'N')],
-            'when facing east' => [[0, 0], 'S', new MarsRover([0, 0], 'E')],
-            'when facing south' => [[0, 0], 'W', new MarsRover([0, 0], 'S')],
-            'when facing west' => [[0, 0], 'N', new MarsRover([0, 0], 'W')],
+            'when facing north' => [new Coordinates(0, 0), 'E', new MarsRover(new Coordinates(0, 0), 'N')],
+            'when facing east' => [new Coordinates(0, 0), 'S', new MarsRover(new Coordinates(0, 0), 'E')],
+            'when facing south' => [new Coordinates(0, 0), 'W', new MarsRover(new Coordinates(0, 0), 'S')],
+            'when facing west' => [new Coordinates(0, 0), 'N', new MarsRover(new Coordinates(0, 0), 'W')],
         ])->it(
             'should turn clockwise',
             function ($expectedPosition, $expectedOrientation, MarsRover $rover) {
                 $rover->commands(['r']);
 
-                expect($rover->position())->toBe($expectedPosition);
+                expect($rover->position())->toEqual($expectedPosition);
                 expect($rover->orientation())->toBe($expectedOrientation);
             }
         );
