@@ -70,6 +70,21 @@ describe('A Mars Rover', function () {
         expect($rover->orientation())->toBe(CardinalPoint::east());
     });
 
+    context('if an obstacle is detected', function () {
+        it('should abort the execution of remaining commands', function () {
+            $rover = new MarsRover(Coordinates::create(2, 2), CardinalPoint::north());
+            $obstacleCoordinates = Coordinates::create(1, 3);
+            $planet = new Planet(5, 5, [Coordinates::create(4, 2), $obstacleCoordinates]);
+            $expectedRover = new MarsRover(Coordinates::create(2, 3), CardinalPoint::east());
+
+            expect(function () use ($rover, $planet) {
+                $this->controlCenter->commands($rover, $planet, ['f', 'r', 'b', 'l', 'f']);
+            })->toThrow(new ObstacleDetected($expectedRover, $obstacleCoordinates));
+
+            expect($rover)->toEqual($expectedRover);
+        });
+    });
+
     describe('given a forward command', function () {
         each([
             'when facing north' => [
@@ -185,6 +200,21 @@ describe('A Mars Rover', function () {
                 expect($rover->position())->toBe($expectedPosition);
             }
         );
+
+        context('if an obstacle is detected', function () {
+            it('should abort the command execution', function () {
+                $initialPosition = Coordinates::create(2, 3);
+                $rover = new MarsRover($initialPosition, CardinalPoint::east());
+                $obstacleCoordinates = Coordinates::create(1, 3);
+                $planet = new Planet(5, 5, [Coordinates::create(4, 2), $obstacleCoordinates]);
+
+                expect(function () use ($rover, $planet) {
+                    $this->controlCenter->commands($rover, $planet, ['b']);
+                })->toThrow(new ObstacleDetected($rover, $obstacleCoordinates));
+
+                expect($rover->position())->toBe($initialPosition);
+            });
+        });
     });
 
     describe('given a left command', function () {
