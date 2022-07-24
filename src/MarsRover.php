@@ -32,4 +32,9 @@ class MarsRover
     {
         $this->orientation = $orientation;
     }
+
+    public function __toString(): string
+    {
+        return "{ position: {$this->position()}, orientation: {$this->orientation()} }";
+    }
 }

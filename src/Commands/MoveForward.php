@@ -3,6 +3,7 @@
 namespace GPascual\MarsRover\Commands;
 
 use GPascual\MarsRover\MarsRover;
+use GPascual\MarsRover\ObstacleDetected;
 use GPascual\MarsRover\Planet;
 
 class MoveForward extends Command
@@ -15,11 +16,12 @@ class MoveForward extends Command
         $this->planet = $planet;
     }
 
-
     protected function execute(): void
     {
-        $this->rover->setPosition(
-            $this->planet->wrapCoordinates($this->rover->position()->add($this->rover->orientation()))
-        );
+        $newPosition = $this->planet->wrapCoordinates($this->rover->position()->add($this->rover->orientation()));
+
+        $this->planet->hasAnObstacleThere($newPosition) && throw new ObstacleDetected($this->rover, $newPosition);
+
+        $this->rover->setPosition($newPosition);
     }
 }

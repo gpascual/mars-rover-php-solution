@@ -4,6 +4,7 @@ namespace GPascual\MarsRover\Commands;
 
 use GPascual\MarsRover\MarsRover;
 use GPascual\MarsRover\Planet;
+use GPascual\MarsRover\Spec\ObstacleDetected;
 
 abstract class Command
 {

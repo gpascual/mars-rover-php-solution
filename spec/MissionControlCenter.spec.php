@@ -6,6 +6,7 @@ use GPascual\MarsRover\CardinalPoint;
 use GPascual\MarsRover\Coordinates;
 use GPascual\MarsRover\MarsRover;
 use GPascual\MarsRover\MissionControlCenter;
+use GPascual\MarsRover\ObstacleDetected;
 use GPascual\MarsRover\Planet;
 
 use function Lambdish\Phunctional\each as walk;
@@ -118,6 +119,21 @@ describe('A Mars Rover', function () {
                 expect($rover->position())->toBe($expectedPosition);
             }
         );
+
+        context('if an obstacle is detected', function () {
+            it('should abort the command execution', function () {
+                $initialPosition = Coordinates::create(1, 3);
+                $rover = new MarsRover($initialPosition, CardinalPoint::south());
+                $obstacleCoordinates = Coordinates::create(1, 2);
+                $planet = new Planet(5, 5, [Coordinates::create(4, 2), $obstacleCoordinates]);
+
+                expect(function () use ($rover, $planet) {
+                    $this->controlCenter->commands($rover, $planet, ['f']);
+                })->toThrow(new ObstacleDetected($rover, $obstacleCoordinates));
+
+                expect($rover->position())->toBe($initialPosition);
+            });
+        });
     });
 
     describe('given a backward command', function () {

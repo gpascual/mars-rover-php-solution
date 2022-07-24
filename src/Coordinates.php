@@ -9,8 +9,8 @@ class Coordinates
     /** @var ?callable */
     protected static $creator;
 
-    private int $x;
-    private int $y;
+    protected int $x;
+    protected int $y;
 
     public static function create(int $x, int $y): static
     {
@@ -27,7 +27,7 @@ class Coordinates
         return new static($x, $y);
     }
 
-    private function __construct(int $x, int $y)
+    protected function __construct(int $x, int $y)
     {
         $this->x = $x;
         $this->y = $y;
@@ -58,5 +58,10 @@ class Coordinates
         $modX = $maxX + 1;
         $modY = $maxY + 1;
         return self::create(($this->x + $modX) % $modX, ($this->y + $modY) % $modY);
+    }
+
+    public function __toString(): string
+    {
+        return "{ x: {$this->x}, y: {$this->y} }";
     }
 }
