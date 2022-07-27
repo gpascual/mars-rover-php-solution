@@ -9,6 +9,7 @@ use GPascual\MarsRover\MissionControlCenter;
 use GPascual\MarsRover\ObstacleDetected;
 use GPascual\MarsRover\Planet;
 
+use GPascual\MarsRover\UnknownCommand;
 use function Lambdish\Phunctional\each as walk;
 use function Lambdish\Phunctional\partial;
 
@@ -61,27 +62,42 @@ describe('A Mars Rover', function () {
         expect($rover->orientation())->toEqual($initialOrientation);
     });
 
-    it('may receive a list of commands', function () {
-        $rover = new MarsRover(Coordinates::create(0, 0), CardinalPoint::south());
+    context('given a list of commands', function () {
+        it('should execute all of them in sequence', function () {
+            $rover = new MarsRover(Coordinates::create(0, 0), CardinalPoint::south());
 
-        $this->controlCenter->commands($rover, $this->planet, ['l','f', 'l', 'f', 'r', 'b']);
+            $this->controlCenter->commands($rover, $this->planet, ['l', 'f', 'l', 'f', 'r', 'b']);
 
-        expect($rover->position())->toEqual(Coordinates::create(0, 1));
-        expect($rover->orientation())->toBe(CardinalPoint::east());
-    });
+            expect($rover->position())->toEqual(Coordinates::create(0, 1));
+            expect($rover->orientation())->toBe(CardinalPoint::east());
+        });
 
-    context('if an obstacle is detected', function () {
-        it('should abort the execution of remaining commands', function () {
-            $rover = new MarsRover(Coordinates::create(2, 2), CardinalPoint::north());
-            $obstacleCoordinates = Coordinates::create(1, 3);
-            $planet = new Planet(5, 5, [Coordinates::create(4, 2), $obstacleCoordinates]);
-            $expectedRover = new MarsRover(Coordinates::create(2, 3), CardinalPoint::east());
+        context('when an obstacle is detected', function () {
+            it('should abort the execution of remaining commands', function () {
+                $rover = new MarsRover(Coordinates::create(2, 2), CardinalPoint::north());
+                $obstacleCoordinates = Coordinates::create(1, 3);
+                $planet = new Planet(5, 5, [Coordinates::create(4, 2), $obstacleCoordinates]);
+                $expectedRover = new MarsRover(Coordinates::create(2, 3), CardinalPoint::east());
 
-            expect(function () use ($rover, $planet) {
-                $this->controlCenter->commands($rover, $planet, ['f', 'r', 'b', 'l', 'f']);
-            })->toThrow(new ObstacleDetected($expectedRover, $obstacleCoordinates));
+                expect(function () use ($rover, $planet) {
+                    $this->controlCenter->commands($rover, $planet, ['f', 'r', 'b', 'l', 'f']);
+                })->toThrow(new ObstacleDetected($expectedRover, $obstacleCoordinates));
 
-            expect($rover)->toEqual($expectedRover);
+                expect($rover)->toEqual($expectedRover);
+            });
+        });
+
+        context('with an unknown command', function () {
+            it('should not execute any command', function () {
+                $rover = new MarsRover(Coordinates::create(2, 2), CardinalPoint::north());
+                $expectedRover = new MarsRover(Coordinates::create(2, 2), CardinalPoint::north());
+
+                expect(function () use ($rover) {
+                    $this->controlCenter->commands($rover, $this->planet, ['f', 'r', 'b', 'unknown command', 'f']);
+                })->toThrow(new UnknownCommand('unknown command'));
+
+                expect($rover)->toEqual($expectedRover);
+            });
         });
     });
 
@@ -121,11 +137,11 @@ describe('A Mars Rover', function () {
             'when facing north at the highest latitude'
                 => [Coordinates::create(4, 0), new MarsRover(Coordinates::create(4, 5), CardinalPoint::north())],
             'when facing east at the highest longitude'
-            => [Coordinates::create(0, 0), new MarsRover(Coordinates::create(5, 0), CardinalPoint::east())],
+                => [Coordinates::create(0, 0), new MarsRover(Coordinates::create(5, 0), CardinalPoint::east())],
             'when facing south at the lowest latitude'
-            => [Coordinates::create(2, 5), new MarsRover(Coordinates::create(2, 0), CardinalPoint::south())],
+                => [Coordinates::create(2, 5), new MarsRover(Coordinates::create(2, 0), CardinalPoint::south())],
             'when facing west at the lowest longitude'
-            => [Coordinates::create(5, 1), new MarsRover(Coordinates::create(0, 1), CardinalPoint::west())],
+                => [Coordinates::create(5, 1), new MarsRover(Coordinates::create(0, 1), CardinalPoint::west())],
         ])->it(
             'should wrap the edge',
             function (Coordinates $expectedPosition, MarsRover $rover) {
@@ -185,13 +201,13 @@ describe('A Mars Rover', function () {
 
         each([
             'when facing north at the lowest latitude'
-            => [Coordinates::create(4, 5), new MarsRover(Coordinates::create(4, 0), CardinalPoint::north())],
+                => [Coordinates::create(4, 5), new MarsRover(Coordinates::create(4, 0), CardinalPoint::north())],
             'when facing east at the lowest longitude'
-            => [Coordinates::create(5, 0), new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())],
+                => [Coordinates::create(5, 0), new MarsRover(Coordinates::create(0, 0), CardinalPoint::east())],
             'when facing south at the highest latitude'
-            => [Coordinates::create(2, 0), new MarsRover(Coordinates::create(2, 5), CardinalPoint::south())],
+                => [Coordinates::create(2, 0), new MarsRover(Coordinates::create(2, 5), CardinalPoint::south())],
             'when facing west at the highest longitude'
-            => [Coordinates::create(0, 1), new MarsRover(Coordinates::create(5, 1), CardinalPoint::west())],
+                => [Coordinates::create(0, 1), new MarsRover(Coordinates::create(5, 1), CardinalPoint::west())],
         ])->it(
             'should wrap the edge',
             function (Coordinates $expectedPosition, MarsRover $rover) {

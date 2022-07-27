@@ -4,6 +4,7 @@ namespace GPascual\MarsRover\Commands;
 
 use GPascual\MarsRover\MarsRover;
 use GPascual\MarsRover\Planet;
+use GPascual\MarsRover\UnknownCommand;
 
 abstract class Command
 {
@@ -21,7 +22,7 @@ abstract class Command
             'b' => new MoveBackward($rover, $planet),
             'l' => new TurnLeft($rover),
             'r' => new TurnRight($rover),
-            default => $commandName,
+            default => throw new UnknownCommand($commandName),
         };
     }
 
