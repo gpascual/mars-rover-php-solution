@@ -10,7 +10,7 @@ class MoveBackward extends Command
 {
     private Planet $planet;
 
-    public function __construct(MarsRover $rover, Planet $planet)
+    protected function __construct(MarsRover $rover, Planet $planet)
     {
         parent::__construct($rover);
         $this->planet = $planet;
